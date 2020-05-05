@@ -15,7 +15,7 @@ class UserSeeder extends Seeder
             'name' => 'Marko Nikolić',
             'username' => 'marko',
             'email' => 'marko.nikolic@crta.rs',
-            'password' => Hash::make('M1Q8@4QpZsE*Gv9hdE*ay8#8R'),
+            'password' => Hash::make('12345678'),
         ]);
 
         $user->syncRoles(['Administrator']); //Assigning role to user
