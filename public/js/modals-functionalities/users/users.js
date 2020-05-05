@@ -123,6 +123,7 @@ jQuery(document).ready(function(){
                 username: $('#edit-username').val(),
                 email: $('#edit-email').val(),
                 password: $('#edit-password').val(),
+                password_confirmation: $('#edit-password-confirmation').val(),
                 id: $('#edit-user-id').val(),
                 roles: roles_arr,
             },
