@@ -11,7 +11,7 @@
 					
 	                <form method="POST" action="{{ route('admin.users.update', array(Auth::user()->id) ) }}">
 		                <div class="modal-header">
-		                    <h5 class="modal-title">{{ __('Edit user') }}</h5>
+		                    <h3 class="modal-title"><i class="fas fa-user-edit"></i> {{ __('Profile') }}</h3>
 		                </div>
 		                <div class="modal-body">
 		                    @method('PATCH')

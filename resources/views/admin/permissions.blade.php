@@ -15,7 +15,7 @@
             <div class="col-md-12">
                 <div class="card">
 
-                    <div class="card-header"><h3><i class="fas fa-user-lock"></i> Permissions Administration</h3></div>
+                    <div class="card-header"><h3><i class="fas fa-user-lock"></i> {{ __('Permissions Administration') }}</h3></div>
                     
                     <div class="card-body">
                         

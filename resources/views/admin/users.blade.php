@@ -15,7 +15,7 @@
                             <div class="col-md-12">
                                 <div class="card">
 
-                                    <div class="card-header"><h3><i class="fas fa-users"></i> Users Administration</h3></div>
+                                    <div class="card-header"><h3><i class="fas fa-users"></i> {{ __('Users Administration') }}</h3></div>
                                     
                                     <div class="card-body">
                                         
