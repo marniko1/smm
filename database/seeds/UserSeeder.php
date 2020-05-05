@@ -1,5 +1,6 @@
 <?php
 
+use App\User;
 use Illuminate\Database\Seeder;
 
 class UserSeeder extends Seeder
@@ -11,13 +12,13 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        $user = DB::table('users')->insert([
+        $user = User::create([
             'name' => 'Marko Nikolić',
             'username' => 'marko',
             'email' => 'marko.nikolic@crta.rs',
             'password' => Hash::make('12345678'),
         ]);
 
-        $user->syncRoles(['Administrator']); //Assigning role to user
+        $user->assignRole('Administrator'); //Assigning role to user
     }
 }
