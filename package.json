@@ -26,6 +26,8 @@
         "@fortawesome/fontawesome-free": "^5.13.0",
         "datatables": "^1.10.18",
         "datatables.net-bs4": "^1.10.20",
+        "datatables.net-fixedcolumns": "^3.3.0",
+        "datatables.net-responsive-dt": "^2.2.3",
         "jquery": "^3.4.1",
         "jszip": "^3.4.0",
         "pdfmake": "^0.1.65"

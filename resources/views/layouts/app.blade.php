@@ -1,7 +1,9 @@
 @include('inc.head')
 
 @auth
-	@include('inc.sidebar')
+	@if(Request::route()->getPrefix() == '/admin' || Request::route()->getName() == 'home')
+		@include('inc.sidebar')
+	@endif
 @endauth
 
 @yield('content')

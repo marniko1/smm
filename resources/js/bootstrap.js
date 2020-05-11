@@ -72,7 +72,7 @@ require('datatables');
 require('datatables.net-bs4');
 // require('datatables.net-buttons');
 // require('datatables.net-fixedheader');
-// require('datatables.net-responsive');
+require('datatables.net-responsive');
 // require('datatables.net-select');
 // require( 'datatables.net-buttons/js/buttons.colVis.js' )(); // Column visibility
 // require( 'datatables.net-buttons/js/buttons.html5.js' )();  // HTML 5 file export
