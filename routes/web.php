@@ -20,6 +20,8 @@ Route::group(['middleware' => 'auth'], function() {
 
 	Route::get('/', 'HomeController@index')->name('home');
 
+	Route::get('/posts', 'PostsController@index')->name('posts');
+
 
 	Route::namespace('Admin')->prefix('admin')->name('admin.')->group(function(){
 		Route::resource('users', 'UserController');
