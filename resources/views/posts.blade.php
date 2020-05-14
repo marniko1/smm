@@ -13,6 +13,8 @@
                     
                     <div class="card-body">
 
+                        <button id="btn" class="btn">SEARCH</button>
+
                         <div class="table-wrapper col-12 mt-5">
                             <table id="posts-table" class="table table-sm p-0 table-hover font-s display wrap table-bordered" width="100%">
                                 <caption>List of posts</caption>
@@ -117,6 +119,12 @@
                     // { width: 200, "targets": [ 6 ] },
                     //{ className: "permissions", "targets": [ 1 ] }
                 // ]
+            });
+
+
+            $('#btn').click(function () {
+                var search = "SDP Srbije (@sdpsrbije)";
+                table.columns(4).search(search).draw();
             });
         });
     </script>

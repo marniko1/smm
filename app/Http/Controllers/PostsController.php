@@ -17,7 +17,16 @@ class PostsController extends Controller
     public function index()
     {
         
-        $posts = Post::with('tags', 'tags.category', 'domain', 'type', 'author', 'sentiment', 'project', 'gender')->get();
+        $posts = Post::select('posts.*')->with('tags', 'tags.category', 'domain', 'type', 'author', 'sentiment', 'project', 'gender');
+
+        // $posts = Post::select('*')
+        // // ->where('firstname', 'like', "%$word%")
+        // // ->orWhere('lastname', 'like', "%$word%")
+        // ->with(['job' => function($query) {
+        //                 $query->select('id', 'name');
+        //         }])->get();
+
+        // dd($posts);
         $all_categories = Category::all();
 
         $categories_string = array();
