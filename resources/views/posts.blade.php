@@ -16,10 +16,16 @@
                         <button id="btn" class="btn">SEARCH</button>
 
                         <select class="js-example-basic-multiple" name="states[]" multiple="multiple">
-                            <option value="SDP Srbije (@sdpsrbije)">SDP Srbije (@sdpsrbije)</option>
-    ...
-                            <option value="Naprednjaci">Naprednjaci</option>
+                            <option value="OB_SPS">OB_SPS</option>
+                            <option value="OB_VelimirIlić">OB_VelimirIlić</option>
+                            <option value="OB_DS">OB_DS</option>
+                                ...
+                            <option value="OB_NarodnaStranka">OB_NarodnaStranka</option>
                         </select>
+
+                        <div id="dt-filters-wrapper">
+                            
+                        </div>
 
                         <div class="table-wrapper col-12 mt-5">
                             <table id="posts-table" class="table table-sm p-0 table-hover font-s display wrap table-bordered" width="100%">
@@ -54,8 +60,6 @@
 @stop
 
 @push('scripts')
-
-<script src="https://cdn.datatables.net/fixedcolumns/3.3.0/js/dataTables.fixedColumns.min.js"></script>
 
 
     <script>
@@ -98,7 +102,7 @@
                     @foreach ($all_categories as $category)
                         {
                             data: 'tags',
-                            name: 'category',
+                            name: 'tags.name',
                             render: function(data) {
 
                                 let cat_prefix = '{{ $category->prefix }}';
@@ -120,7 +124,7 @@
                                 return filtered_tags;
                             },
                             orderable: false,
-                            searchable: false
+                            searchable: true
                         },
                     @endforeach
                 ],
@@ -128,12 +132,6 @@
                     // { width: 200, "targets": [ 6 ] },
                     //{ className: "permissions", "targets": [ 1 ] }
                 // ]
-            });
-
-
-            $('#btn').click(function () {
-                var search = "SDP Srbije (@sdpsrbije)";
-                table.columns(4).search(search).draw();
             });
 
             $('.js-example-basic-multiple').change(function () {
@@ -149,7 +147,7 @@
                // search = search.replace(/[^\w^\s^\d]/g, "\\$&")
                 // $.each(search, function(key, value){
 
-                    table.columns(4).search(search, true, false, true).draw(); // search(input, regex -> Treat as a regular expression (true) or not (default, false)., smart, caseInsen)
+                    table.columns(11).search(search, true, false, true).draw(); // search(input, regex -> Treat as a regular expression (true) or not (default, false)., smart, caseInsen)
                 // })
             });
 
@@ -181,7 +179,7 @@
         //         // Create the select list and search operation
         //         var select = $('<select />')
         //             .appendTo(
-        //                 this.header()
+        //                 $('#dt-filters-wrapper')
         //             )
         //             .on( 'change', function () {
         //                 that
