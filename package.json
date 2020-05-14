@@ -30,6 +30,7 @@
         "datatables.net-responsive-dt": "^2.2.3",
         "jquery": "^3.4.1",
         "jszip": "^3.4.0",
-        "pdfmake": "^0.1.65"
+        "pdfmake": "^0.1.65",
+        "select2": "^4.0.13"
     }
 }

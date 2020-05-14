@@ -15,6 +15,12 @@
 
                         <button id="btn" class="btn">SEARCH</button>
 
+                        <select class="js-example-basic-multiple" name="states[]" multiple="multiple">
+                            <option value="SDP Srbije (@sdpsrbije)">SDP Srbije (@sdpsrbije)</option>
+    ...
+                            <option value="Naprednjaci">Naprednjaci</option>
+                        </select>
+
                         <div class="table-wrapper col-12 mt-5">
                             <table id="posts-table" class="table table-sm p-0 table-hover font-s display wrap table-bordered" width="100%">
                                 <caption>List of posts</caption>
@@ -55,11 +61,14 @@
     <script>
         jQuery(document).ready(function(){
 
+            $('.js-example-basic-multiple').select2();
+
             let table = $('#posts-table').DataTable({
                 // dom: 'Bft',
                 processing: true,
                 serverSide: true,
                 responsive: true,
+                search: {regex: true},
                 pagingType: "full_numbers",
                 ajax: URL + '/posts',
                 columns: [
@@ -126,6 +135,69 @@
                 var search = "SDP Srbije (@sdpsrbije)";
                 table.columns(4).search(search).draw();
             });
+
+            $('.js-example-basic-multiple').change(function () {
+                // console.log($(this).val());
+                var search = $(this).val();
+
+                $.each(search, function(key, value){
+                    search[key] = value.replace(/[^\w^\s^\d]/g, "\\$&");
+                });
+
+                search = search.join('|');
+
+               // search = search.replace(/[^\w^\s^\d]/g, "\\$&")
+                // $.each(search, function(key, value){
+
+                    table.columns(4).search(search, true, false, true).draw(); // search(input, regex -> Treat as a regular expression (true) or not (default, false)., smart, caseInsen)
+                // })
+            });
+
+            // var qualSearch = [];
+            // for (var i = 0; i < quals.length; i++)
+            // {
+            //     qualSearch.push("\\b" + parseInt(quals[i]) + "\\b");
+            // }
+             
+            // var search = qualSearch.join("|");
+            // _DTOWLInfoGrid.columns(7).search(qualSearch.join("|"), true, false, true);
+             
+            // _DTOWLInfoGrid.draw();
+
+
+        //     DropDowns.donetyping( function () {
+        //     var val = $(this).val();
+        //     if($.isArray(val)){val=val.join('$$');}
+        //     table.column($(this).parents("td").index("td")).search( val ? ''+val+'' : '', false, false ).draw();
+        // } , 1200);
+
+
+        // $('#example').DataTable({"iDisplayLength": 100, "search": {regex: true}}).column(1).search("backlog|Stretch|Solid|NIR", true, false ).draw(); 
+
+        //     table.columns().every( function () {
+        //     // table.columns( '.select-filter' ).every( function () {
+        //         var that = this;
+             
+        //         // Create the select list and search operation
+        //         var select = $('<select />')
+        //             .appendTo(
+        //                 this.header()
+        //             )
+        //             .on( 'change', function () {
+        //                 that
+        //                     .search( $(this).val() )
+        //                     .draw();
+        //             } );
+             
+        //         // Get the search data for the first column and add to the select list
+        //         this
+        //             .cache( 'search' )
+        //             .sort()
+        //             .unique()
+        //             .each( function ( d ) {
+        //                 select.append( $('<option value="'+d+'">'+d+'</option>') );
+        //             } );
+        //     } );
         });
     </script>
 
