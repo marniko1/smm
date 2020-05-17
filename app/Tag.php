@@ -12,7 +12,7 @@ class Tag extends Model
      */
     public function posts()
     {
-        return $this->belongsToMany('App\Post')->withPivot('post_id');
+        return $this->belongsToMany('App\Post');
     }
 
     /**

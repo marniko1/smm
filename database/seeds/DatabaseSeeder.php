@@ -12,16 +12,16 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
      	$this->call([
-	        RolesAndPermissionsSeeder::class,
-            UserSeeder::class,
-            CategorySeeder::class,
-            TagSeeder::class,
-            DomainSeeder::class,
-            TypeSeeder::class,
-            AuthorSeeder::class,
-            SentimentSeeder::class,
-            ProjectSeeder::class,
-	        GenderSeeder::class,
+	        // RolesAndPermissionsSeeder::class,
+         //    UserSeeder::class,
+         //    CategorySeeder::class,
+         //    TagSeeder::class,
+         //    DomainSeeder::class,
+         //    TypeSeeder::class,
+         //    AuthorSeeder::class,
+         //    SentimentSeeder::class,
+         //    ProjectSeeder::class,
+	        // GenderSeeder::class,
             PostSeeder::class,
 	    ]);
     }
