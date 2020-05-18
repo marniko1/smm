@@ -27,6 +27,11 @@ Route::group(['middleware' => 'auth'], function() {
 		Route::resource('users', 'UserController');
 		Route::resource('roles', 'RolesController');
 		Route::resource('permissions', 'PermissionsController');
+
+
+		// Route::get('export', 'MyController@export')->name('export');
+		Route::get('/import', 'ImportController@index')->name('import');
+		Route::post('import', 'ImportController@import')->name('import');
 	});
 });
 

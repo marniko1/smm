@@ -20,6 +20,12 @@
             <li class="nav-item">
                 <a class="nav-link pl-5{{ Request::is('admin/permissions') ? ' active' : '' }}" href="{{ route('admin.permissions.index') }}"><i class="fas fa-user-lock"></i><span class="ml-3">Permissions</span></a>
             </li>
+
+            <h2 class="mt-5 col-12">ImportData</h2>
+            
+            <li class="nav-item">
+                <a class="nav-link pl-5{{ Request::is('admin/import') ? ' active' : '' }}" href="{{ route('admin.import') }}"><i class="fas fa-file-import"></i><span class="ml-3">Import</span></a>
+            </li>
             @endrole
         </ul>
     </div>

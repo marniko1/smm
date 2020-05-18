@@ -21,6 +21,7 @@
                             @foreach ($all_categories as $key => $category)
                                 <div class="col-md-4">
                                     <select class="js-example-basic-multiple col-12" name="tags[]" multiple="multiple" data-placeholder="{{ $category->name }}" data-col="{{ 11 + $key }}">
+                                        <option value="OR">OR</option>
                                         @foreach ($category->tags as $tag)
                                             <option value="{{ $tag->id }}">{{ $tag->name }}</option>
                                         @endforeach
@@ -148,8 +149,8 @@
                             let tags = [];
 
                             $.each($('select[name="tags[]"]'), function (key,value){
-                                // tags.push($(value).val());
-                                tags = tags.concat($(value).val());
+                                tags.push($(value).val());
+                                // tags = tags.concat($(value).val());
                             })
 
                             d.tags = tags;
