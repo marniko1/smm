@@ -148,8 +148,8 @@
                             let tags = [];
 
                             $.each($('select[name="tags[]"]'), function (key,value){
-                                tags.push($(value).val());
-                                // tags = tags.concat($(value).val());
+                                // tags.push($(value).val());
+                                tags = tags.concat($(value).val());
                             })
 
                             d.tags = tags;
