@@ -2,8 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Author;
 use App\Category;
+use App\Domain;
+use App\Gender;
 use App\Post;
+use App\Project;
+use App\Sentiment;
+use App\Type;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTables;
@@ -19,94 +25,57 @@ class PostsController extends Controller
     {
         
 
-        // $posts = Post::select('*')
-        // // ->where('firstname', 'like', "%$word%")
-        // // ->orWhere('lastname', 'like', "%$word%")
-        // ->with(['job' => function($query) {
-        //                 $query->select('id', 'name');
-        //         }])->get();
-
-        // dd($posts);
-
          /*----------  Checks if request is AJAX  ----------*/
         
 
         if (request()->ajax()) {
 
-            // $posts = Post::with('tags:category_id,name', 'tags.category:id,name')->select('posts.*')->chunk(100);
-            // $posts = DB::table('posts')
-            //         ->join('post_tag', 'posts.id', '=', 'post_tag.post_id')
-            //         ->join('tags', 'tags.id', '=', 'post_tag.tag_id')
-            //         ->join('categories', 'categories.id', '=', 'tags.category_id')
-            //         ->join('domains', 'domains.id', '=', 'posts.domain_id')
-            //         ->join('types', 'types.id', '=', 'posts.type_id')
-            //         ->join('authors', 'authors.id', '=', 'posts.author_id')
-            //         ->join('sentiments', 'sentiments.id', '=', 'posts.sentiment_id')
-            //         ->join('projects', 'projects.id', '=', 'posts.project_id')
-            //         ->join('genders', 'genders.id', '=', 'posts.gender_id')
-            //         ->havingRaw('')
-            //         ->select('posts.*', 'tags.name as tags', 'categories.name as category', 'domains.name as domain', 'types.name as type', 'authors.name as author', 'authors.id as authors_id', 'sentiments.icon as sentiment', 'projects.name as project', 'genders.icon as gender')
-            //         // ->groupBy('posts.id')
-            //         ->orderBy('posts.id');
-
-
-
-
-                        // 'tags.category:id,name', 'domain:id,name', 'type:id,name', 'author:id,name,author_id', 'sentiment:id,icon', 'project:id,name', 'gender:id,icon');
             $posts = Post::select('posts.*')->with('tags:tags.id,category_id,name', 'tags.category:id,name', 'domain:id,name', 'type:id,name', 'author:id,name,author_id', 'sentiment:id,icon', 'project:id,name', 'gender:id,icon');
 
             if ($tags = request()->get('tags')) {
 
+                dd($tags);
 
-                //1 iz tabele post_tag nadjem sve post_id koji imaju svaki tag_id koji su dosli kroz request u array-u
-                //2 onda modifikujem query sa whereIn pa array tih post_id
-
-                $filtered_posts_ids = DB::table('post_tag')
-                                        ->select('post_id')
+                $posts_ids =  DB::table('post_tag')
                                         ->whereIn('tag_id', $tags)
                                         ->groupBy('post_id')
                                         ->havingRaw('COUNT(tag_id) = ?', [count($tags)])
-                                        ->get()
+                                        ->pluck('post_id')
                                         ->toArray();
-
-                // var_dump($filtered_posts_ids);
-
-                $posts_ids = array();
-
-                foreach ($filtered_posts_ids as $key => $id) {
-                    
-                    array_push($posts_ids, $id->post_id);
-                }
 
                 $posts->whereIn('posts.id', $posts_ids);
 
-                // foreach($selectedActivities as $activityId){
-                //     $query->whereHas('activities', function($q) use ($activityId){
-                //         $q->where('id', $activityId);
-                //     });
-                // }
+            }
 
 
-                // $posts->having('count', '=', $tags);
-                // $posts->having('count', $datatables->request->get('operator'), $post);
+            if ($domains = request()->get('domains')) {
 
-                // $count = count($tags);
-                // $custom_filter = false;
-                // $sql = '';
-                // foreach ($tags as $key => $tag) {
-                        
+                $posts->whereIn('domain_id', $domains);
+            }
 
-                //     if ($custom_filter) {
-                //        $sql .= " AND";
-                //     }
-                //     $sql .= " SUM(tags.name = ?)";
-                //     $custom_filter = true;
+            if ($types = request()->get('types')) {
 
-                // }
-                // // $filtered_posts_ids = PostTag::with('post:id')->whereIn('posts.id', [''])
-                // $posts->havingRaw($sql, [$tags]);
+                $posts->whereIn('type_id', $types);
+            }
 
-                 // $posts = Post::select('posts.*')->with('tags:tags.id,category_id,name', 'tags.category:id,name', 'domain:id,name', 'type:id,name', 'author:id,name,author_id', 'sentiment:id,icon', 'project:id,name', 'gender:id,icon')->havingRaw($sql, [$tags]);;
+            if ($authors = request()->get('authors')) {
+
+                $posts->whereIn('author_id', $authors);
+            }
+
+            if ($sentiments = request()->get('sentiments')) {
+
+                $posts->whereIn('sentiment_id', $sentiments);
+            }
+
+            if ($projects = request()->get('projects')) {
+
+                $posts->whereIn('project_id', $projects);
+            }
+
+            if ($genders = request()->get('genders')) {
+
+                $posts->whereIn('gender_id', $genders);
             }
 
 
@@ -197,17 +166,36 @@ class PostsController extends Controller
         //         // });
         //     }
         // }, true)
-            ->setTotalRecords(Post::count())
+            // ->setTotalRecords(Post::count())
             // ->setFilteredRecords(100)
             ->rawColumns(['link', 'gender.icon', 'sentiment.icon'])
             ->make();
         }
 
+        // $filters = array();
+
         $all_categories = Category::with('tags')->get();
 
-        $categories_string = array();
 
-        return view('posts')->with('all_categories', $all_categories);
+        // $filters[] = Domain::all();
+        // $filters[] = Type::all();
+        // $filters[] = Author::all();
+        // $filters[] = Sentiment::all();
+        // $filters[] = Project::all();
+        // $filters[] = Gender::all();
+
+
+        $all_domains = Domain::all();
+        $all_types = Type::all();
+        $all_authors = Author::all();
+        $all_sentiments = Sentiment::all();
+        $all_projects = Project::all();
+        $all_genders = Gender::all();
+
+
+
+        // return view('posts')->with(['all_categories' => $all_categories, 'filters' => $filters]);
+        return view('posts')->with(['all_categories' => $all_categories, 'all_domains' => $all_domains, 'all_types' => $all_types, 'all_authors' => $all_authors, 'all_sentiments' => $all_sentiments, 'all_projects' => $all_projects, 'all_genders' => $all_genders]);
     }
 
     /**

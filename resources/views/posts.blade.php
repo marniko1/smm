@@ -4,7 +4,8 @@
 
 @section('content')
 
-{{-- {{ dd($all_categories) }} --}}
+{{-- get MODEL name by table name --}}
+{{-- {{ dd(Str::studly(Str::singular($all_domains[0]->getTable()))) }} --}}
 
     <div class="container-fluid">
         <div class="row justify-content-center">
@@ -15,68 +16,71 @@
                     
                     <div class="card-body">
 
-                        {{-- <button id="btn" class="btn">SEARCH</button> --}}
-
-
-
-
                         <div class="row">
                             
-                        @foreach ($all_categories as $key => $category)
+                            @foreach ($all_categories as $key => $category)
+                                <div class="col-md-4">
+                                    <select class="js-example-basic-multiple col-12" name="tags[]" multiple="multiple" data-placeholder="{{ $category->name }}" data-col="{{ 11 + $key }}">
+                                        @foreach ($category->tags as $tag)
+                                            <option value="{{ $tag->id }}">{{ $tag->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            @endforeach
+
+                        </div>
+
+                        <hr>
+
+                        <div class="row">
+
                             <div class="col-md-4">
-                                <select class="js-example-basic-multiple col-12" name="tags[]" multiple="multiple" data-placeholder="{{ $category->name }}" data-col="{{ 11 + $key }}">
-                                    @foreach ($category->tags as $tag)
-                                        <option value="{{ $tag->id }}">{{ $tag->name }}</option>
+                                <select class="js-example-basic-multiple col-12" name="domains[]" multiple="multiple" data-placeholder="Domain">
+                                    @foreach ($all_domains as $domain)
+                                        <option value="{{ $domain->id }}">{{ $domain->name }}</option>
                                     @endforeach
                                 </select>
                             </div>
-                        @endforeach
-                        </div>
 
+                            <div class="col-md-4">
+                                <select class="js-example-basic-multiple col-12" name="types[]" multiple="multiple" data-placeholder="Type">
+                                    @foreach ($all_types as $type)
+                                        <option value="{{ $type->id }}">{{ $type->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
 
+                            <div class="col-md-4">
+                                <select class="js-example-basic-multiple col-12" name="authors[]" multiple="multiple" data-placeholder="Author">
+                                    @foreach ($all_authors as $author)
+                                        <option value="{{ $author->id }}">{{ $author->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
 
+                            <div class="col-md-4">
+                                <select class="js-example-basic-multiple col-12" name="sentiments[]" multiple="multiple" data-placeholder="Sentiments">
+                                    @foreach ($all_sentiments as $sentiment)
+                                        <option value="{{ $sentiment->id }}">{{ $sentiment->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
 
-                        {{-- <select class="js-example-basic-multiple" name="states[]" multiple="multiple">
-                            <option value="OB_SPS">OB_SPS</option>
-                            <option value="OB_VelimirIlić">OB_VelimirIlić</option>
-                            <option value="OB_DS">OB_DS</option>
-                                ...
-                            <option value="OB_NarodnaStranka">OB_NarodnaStranka</option>
-                        </select>
+                            <div class="col-md-4">
+                                <select class="js-example-basic-multiple col-12" name="projects[]" multiple="multiple" data-placeholder="Project">
+                                    @foreach ($all_projects as $project)
+                                        <option value="{{ $project->id }}">{{ $project->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
 
-                        <select class="js-example-basic-multiple" name="states[]" multiple="multiple">
-                            <option value="OB_SPS">OB_SPS</option>
-                            <option value="OB_VelimirIlić">OB_VelimirIlić</option>
-                            <option value="OB_DS">OB_DS</option>
-                                ...
-                            <option value="OB_NarodnaStranka">OB_NarodnaStranka</option>
-                        </select>
-
-                        <select class="js-example-basic-multiple" name="states[]" multiple="multiple">
-                            <option value="OB_SPS">OB_SPS</option>
-                            <option value="OB_VelimirIlić">OB_VelimirIlić</option>
-                            <option value="OB_DS">OB_DS</option>
-                                ...
-                            <option value="OB_NarodnaStranka">OB_NarodnaStranka</option>
-                        </select> --}}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                        <div id="dt-filters-wrapper">
+                            <div class="col-md-4">
+                                <select class="js-example-basic-multiple col-12" name="genders[]" multiple="multiple" data-placeholder="Gender">
+                                    @foreach ($all_genders as $gender)
+                                        <option value="{{ $gender->id }}">{{ $gender->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                             
                         </div>
 
@@ -120,9 +124,17 @@
 
             $('.js-example-basic-multiple').select2({
                 allowClear: true
-                });
+            }).on('select2:unselecting', function() {
+                $(this).data('unselecting', true);
+            }).on('select2:opening', function(e) {
+                if ($(this).data('unselecting')) {
+                    $(this).removeData('unselecting');
+                    e.preventDefault();
+                }
+            });
 
             let table = $('#posts-table').DataTable({
+                dom: '<"top"iflp<"clear">>rt<"bottom"iflp<"clear">>',
                 // dom: 'Bft',
                 processing: true,
                 serverSide: true,
@@ -135,11 +147,19 @@
 
                             let tags = [];
 
-                            $.each($('.js-example-basic-multiple'), function (key,value){
-                                tags = tags.concat($(value).val());
+                            $.each($('select[name="tags[]"]'), function (key,value){
+                                tags.push($(value).val());
+                                // tags = tags.concat($(value).val());
                             })
 
                             d.tags = tags;
+
+                            d.domains = $('select[name="domains[]"]').val();
+                            d.types = $('select[name="types[]"]').val();
+                            d.authors = $('select[name="authors[]"]').val();
+                            d.sentiments = $('select[name="sentiments[]"]').val();
+                            d.projects = $('select[name="projects[]"]').val();
+                            d.genders = $('select[name="genders[]"]').val();
                         }
                     },
                 columns: [
