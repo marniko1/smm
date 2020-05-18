@@ -34,7 +34,7 @@ class PostsController extends Controller
 
             if ($tags = request()->get('tags')) {
 
-                dd($tags);
+                // dd($tags);
 
                 $posts_ids =  DB::table('post_tag')
                                         ->whereIn('tag_id', $tags)
