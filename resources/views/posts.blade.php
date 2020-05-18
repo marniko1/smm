@@ -19,13 +19,13 @@
                         <div class="row">
                             
                             @foreach ($all_categories as $key => $category)
-                                <div class="col-md-4">
-                                    <select class="js-example-basic-multiple col-12" name="tags[]" multiple="multiple" data-placeholder="{{ $category->name }}" data-col="{{ 11 + $key }}">
-                                        <option value="OR">OR</option>
+                                <div class="col-md-4 mb-3 tags">
+                                    <select class="js-example-basic-multiple col-12" name="tags[]" multiple="multiple" data-placeholder="{{ $category->name }}">
                                         @foreach ($category->tags as $tag)
                                             <option value="{{ $tag->id }}">{{ $tag->name }}</option>
                                         @endforeach
                                     </select>
+                                    <input id="orAnd{{ $key }}" class="or-and-toggle" type="checkbox" data-toggle="toggle" data-style="position-absolute-left" data-on="OR" data-off="AND" data-onstyle="danger" data-width="67" data-height="39">
                                 </div>
                             @endforeach
 
@@ -136,7 +136,6 @@
 
             let table = $('#posts-table').DataTable({
                 dom: '<"top"iflp<"clear">>rt<"bottom"iflp<"clear">>',
-                // dom: 'Bft',
                 processing: true,
                 serverSide: true,
                 responsive: true,
@@ -149,8 +148,12 @@
                             let tags = [];
 
                             $.each($('select[name="tags[]"]'), function (key,value){
-                                tags.push($(value).val());
-                                // tags = tags.concat($(value).val());
+                                let val = $(value).val();
+
+                                if ($(this).parents('.tags').find('.or-and-toggle').is(':checked')) {
+                                    val.push('OR');
+                                }
+                                tags.push(val);
                             })
 
                             d.tags = tags;
@@ -210,96 +213,9 @@
                 // ]
             });
 
-
-
-            // $.fn.dataTableExt.afnFiltering.push(
-            //     function(oSettings, aData, iDataIndex) {
-            //         var keywords = $(".dataTables_filter input").val().split(' ');  
-            //         var matches = 0;
-            //         for (var k=0; k<keywords.length; k++) {
-            //             var keyword = keywords[k];
-            //             for (var col=0; col<aData.length; col++) {
-            //                 if (aData[col].indexOf(keyword)>-1) {
-            //                     matches++;
-            //                     break;
-            //                 }
-            //             }
-            //         }
-            //         return matches == keywords.length;
-            //    }
-            // );
-
-
-
-
-
-            $('.js-example-basic-multiple').change(function () {
-
+            $('.js-example-basic-multiple, .or-and-toggle').change(function () {
                 table.draw();
-
-                // console.log($(this).data('col'));
-                // console.log($(this).val());
-                // var search = $(this).val();
-
-                // $.each(search, function(key, value){
-                //     search[key] = value.replace(/[^\w^\s^\d]/g, "\\$&");
-                // });
-
-                // //search = search.join('|'); // OR
-                // search = search.join('&'); // AND
-
-               
-                // // $.each(search, function(key, value){
-
-                //     table.columns($(this).data('col')).search(search, true, false, true).draw(); // search(input, regex -> Treat as a regular expression (true) or not (default, false)., smart, caseInsen)
-                // })
             });
-
-            // var qualSearch = [];
-            // for (var i = 0; i < quals.length; i++)
-            // {
-            //     qualSearch.push("\\b" + parseInt(quals[i]) + "\\b");
-            // }
-             
-            // var search = qualSearch.join("|");
-            // _DTOWLInfoGrid.columns(7).search(qualSearch.join("|"), true, false, true);
-             
-            // _DTOWLInfoGrid.draw();
-
-
-        //     DropDowns.donetyping( function () {
-        //     var val = $(this).val();
-        //     if($.isArray(val)){val=val.join('$$');}
-        //     table.column($(this).parents("td").index("td")).search( val ? ''+val+'' : '', false, false ).draw();
-        // } , 1200);
-
-
-        // $('#example').DataTable({"iDisplayLength": 100, "search": {regex: true}}).column(1).search("backlog|Stretch|Solid|NIR", true, false ).draw(); 
-
-        //     table.columns().every( function () {
-        //     // table.columns( '.select-filter' ).every( function () {
-        //         var that = this;
-             
-        //         // Create the select list and search operation
-        //         var select = $('<select />')
-        //             .appendTo(
-        //                 $('#dt-filters-wrapper')
-        //             )
-        //             .on( 'change', function () {
-        //                 that
-        //                     .search( $(this).val() )
-        //                     .draw();
-        //             } );
-             
-        //         // Get the search data for the first column and add to the select list
-        //         this
-        //             .cache( 'search' )
-        //             .sort()
-        //             .unique()
-        //             .each( function ( d ) {
-        //                 select.append( $('<option value="'+d+'">'+d+'</option>') );
-        //             } );
-        //     } );
         });
     </script>
 

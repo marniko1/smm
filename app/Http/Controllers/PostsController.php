@@ -45,43 +45,48 @@ class PostsController extends Controller
                     $tags_flat = array_diff($tags_flat,array("OR"));
                 }
 
-
                 $posts_ids =  DB::table('post_tag')
                             ->whereIn('tag_id', $tags_flat)
                             ->groupBy('post_id');
 
-                //there is OR in submitted data so cretae AND OR query
-                if(@$or_in_post==1){
+                if (!empty($tags_flat)) {
+                    
+                    //there is OR in submitted data so cretae AND OR query
+                    if(@$or_in_post==1){
 
-                    foreach($tags as $tag){
+                        foreach($tags as $tag){
 
-                        //there is OR in tags subarray
-                        if(in_array("OR",$tag) && count($tag)>1 ){
-                            $orarr = array();
-                            foreach(array_diff($tag,array("OR")) as $v){
-                                $orarr[] = " FIND_IN_SET( ? ,GROUP_CONCAT(tag_id)) ";
+                            //there is OR in tags subarray
+                            if(in_array("OR",$tag) && count($tag)>1 ){
+
+                                $orarr = array();
+                                foreach(array_diff($tag,array("OR")) as $v){
+                                    $orarr[] = " FIND_IN_SET( ? ,GROUP_CONCAT(tag_id)) ";
+                                }
+                                $posts_ids->havingRaw(' ( '.implode(" OR ",$orarr).' ) ', array_diff($tag,array("OR"))  );
+
+                            } else if(!in_array("OR",$tag) && count($tag)>0) {
+
+                                //there is no OR in tags subarray
+                                $orarr = array();
+                                foreach($tag as $v){
+                                    $orarr[] = " FIND_IN_SET( ? ,GROUP_CONCAT(tag_id)) ";
+                                }
+                                $posts_ids->havingRaw('  '.implode(" AND ",$orarr).'  ', array($tag) );
                             }
-                            $posts_ids->havingRaw(' ( '.implode(" OR ",$orarr).' ) ', array_diff($tag,array("OR"))  );
-
-                        } else if(!in_array("OR",$tag) && count($tag)>0) {
-                            //there is no OR in tags subarray
-                            $orarr = array();
-                            foreach($tag as $v){
-                                $orarr[] = " FIND_IN_SET( ? ,GROUP_CONCAT(tag_id)) ";
-                            }
-                            $posts_ids->havingRaw('  '.implode(" AND ",$orarr).'  ', array($tag) );
                         }
+
+                    } else {
+
+                        //there is no OR in submitted data so do AND search
+                        $posts_ids->havingRaw('COUNT(tag_id) = ?', array( count($tags_flat) ) );
                     }
 
-                } else {
-
-                    //there is no OR in submitted data so do AND search
-                    $posts_ids->havingRaw('COUNT(tag_id) = ?', array( count($tags_flat) ) );
+                    $posts_ids = $posts_ids->pluck('post_id');
+                    $posts_ids = $posts_ids->toArray();
+                    $posts->whereIn('posts.id', $posts_ids);
                 }
 
-                $posts_ids = $posts_ids->pluck('post_id');
-                $posts_ids = $posts_ids->toArray();
-                $posts->whereIn('posts.id', $posts_ids);
             }
 
 

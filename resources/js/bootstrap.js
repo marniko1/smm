@@ -82,3 +82,6 @@ require('datatables.net-responsive');
 
 // Select2
 require('select2');
+
+// Bootstrap 4 Toggle
+require('bootstrap4-toggle')

@@ -3,6 +3,26 @@ nav.navbar {
     z-index: 1;
 }
 
+.position-absolute-left {
+    position: absolute;
+    left: 0;
+    top: 0;
+    margin-left: 15px;
+}
+
+.tags .select2-container .select2-search--inline .select2-search__field {
+    padding-left: 65px;
+}
+
+.select2-selection__choice:nth-child(2) {
+    margin-left: 65px;
+}
+
+.position-absolute-left .btn.toggle-off {
+    padding-right: 0;
+    padding-left: 0;
+}
+
 
 
 
