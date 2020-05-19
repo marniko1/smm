@@ -14,7 +14,7 @@ nav.navbar {
     padding-left: 65px;
 }
 
-.select2-selection__choice:nth-child(2) {
+.tags .select2-container .select2-selection__choice:nth-child(2) {
     margin-left: 65px;
 }
 
