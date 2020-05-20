@@ -156,11 +156,11 @@ class PostsImport implements ToCollection, WithHeadingRow, WithBatchInserts, Wit
 
     public function batchSize(): int
     {
-        return 100;
+        return 1000;
     }
 
     public function chunkSize(): int
     {
-        return 100;
+        return 1000;
     }
 }
