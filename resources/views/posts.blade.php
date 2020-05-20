@@ -91,6 +91,9 @@
                                 <thead class="text-nowrap">
                                     <tr>
                                         <th>ID</th>
+                                        @foreach ($all_categories as $category)
+                                            <th>{{ $category->name }}</th>
+                                        @endforeach
                                         <th>SO ID</th>
                                         <th>Domain group</th>
                                         <th>Specific type</th>
@@ -101,9 +104,6 @@
                                         <th>Project name</th>
                                         <th>Gender</th>
                                         <th>Link to post</th>
-                                        @foreach ($all_categories as $category)
-                                            <th>{{ $category->name }}</th>
-                                        @endforeach
                                     </tr>
                                 </thead>
                             </table>
@@ -168,16 +168,6 @@
                     },
                 columns: [
                     { data: 'id', name: 'posts.id' },
-                    { data: 'so_id', name: 'posts.so_id' },
-                    { data: 'domain.name', name: 'domain.name' },
-                    { data: 'type.name', name: 'type.name' },
-                    { data: 'author.name', name: 'author.name' },
-                    { data: 'author.author_id', name: 'author.author_id' },
-                    { data: 'content', name: 'posts.content', orderable: false, searchable: false },
-                    { data: 'sentiment.icon', name: 'sentiment.icon' },
-                    { data: 'project.name', name: 'project.name' },
-                    { data: 'gender.icon', name: 'gender.icon' },
-                    { data: 'link', name: 'posts.link', orderable: false, searchable: false },
                     @foreach ($all_categories as $category)
                         {
                             data: 'tags',
@@ -206,6 +196,24 @@
                             searchable: true
                         },
                     @endforeach
+                    { data: 'so_id', name: 'posts.so_id' },
+                    { data: 'domain.name', name: 'domain.name' },
+                    { data: 'type.name', name: 'type.name' },
+                    { data: 'author.name', name: 'author.name' },
+                    { data: 'author.author_id', name: 'author.author_id' },
+                    { 
+                        data: 'content',
+                        name: 'posts.content',
+                        render: function(data, type, row){
+                            return data.substr( 0, 300 ) + '...';
+                        },
+                        orderable: false,
+                        searchable: false 
+                    },
+                    { data: 'sentiment.icon', name: 'sentiment.icon' },
+                    { data: 'project.name', name: 'project.name' },
+                    { data: 'gender.icon', name: 'gender.icon' },
+                    { data: 'link', name: 'posts.link', orderable: false, searchable: false },
                 ],
                 // "columnDefs": [
                     // { width: 200, "targets": [ 6 ] },
