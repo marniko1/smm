@@ -19,6 +19,13 @@ class UserSeeder extends Seeder
             'password' => '12345678',
         ]);
 
+        $user = User::create([
+            'name' => 'Miloš Kostić',
+            'username' => 'misha',
+            'email' => 'milos.kostic@crta.rs',
+            'password' => '12345678',
+        ]);
+
         $user->assignRole('Administrator'); //Assigning role to user
     }
 }
