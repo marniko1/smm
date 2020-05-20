@@ -6,18 +6,33 @@
 
 {{-- {{ dd($errors) }} --}}
 
-	@if (session('status'))
-    <div class="alert alert-success" role="alert">
-        {{ session('status') }}
-    </div>
-    @endif
-
 	<div class="container">
 	    <div class="card bg-light mt-3">
 	        <div class="card-header">
-	            Laravel 5.7 Import Export Excel to database Example - ItSolutionStuff.com
+	            Import SentiOne Excel to database
 	        </div>
+	        
 	        <div class="card-body">
+	        	@if (session('status'))
+			    <div class="alert alert-success" role="alert">
+			        {{ session('status') }}
+			    </div>
+			    @endif
+
+			    @if (isset($failures))
+				   <div class="alert alert-danger" role="alert">
+				      <strong>Errors:</strong>
+				      
+				      <ul>
+				         @foreach ($failures as $failure)
+				            @foreach ($failure->errors() as $error)
+				                <li>{{ $error }}</li>
+				            @endforeach
+				         @endforeach
+				      </ul>
+				   </div>
+				@endif
+
 	            <form action="{{ route('admin.import') }}" method="POST" enctype="multipart/form-data">
 	                @csrf
 	                <input id="file" type="file" class="form-control @error('file') is-invalid @enderror" name="file" value="{{ old('file') }}" autocomplete="file" autofocus required>

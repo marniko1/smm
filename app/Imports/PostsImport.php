@@ -13,10 +13,12 @@ use App\Tag;
 use App\Type;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\ToCollection;
+use Maatwebsite\Excel\Concerns\WithBatchInserts;
+use Maatwebsite\Excel\Concerns\WithChunkReading;
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
 // use Maatwebsite\Excel\Concerns\ToModel;
 
-class PostsImport implements ToCollection
-// class PostsImport implements ToModel
+class PostsImport implements ToCollection, WithHeadingRow, WithBatchInserts, WithChunkReading
 {
     /**
     * @param array $row
@@ -24,24 +26,22 @@ class PostsImport implements ToCollection
     * @return \Illuminate\Database\Eloquent\Model|null
     */
     public function collection(Collection $rows)
-    // public function model(array $row)
     {
-        unset($rows[0]);
 
         foreach ($rows as $row) 
         {
-            $author_id = $row[3];
-            $author_name = $row[2];
+            $author_id = $row['author_id'];
+            $author_name = $row['author'];
             
-            $domain = Domain::firstOrCreate(['name' => $row[9]]);
-            $type = Type::firstOrCreate(['name' => $row[1]]);
+            $domain = Domain::firstOrCreate(['name' => $row['domain_group']]);
+            $type = Type::firstOrCreate(['name' => $row['specific_type']]);
             $author = Author::updateOrCreate( ['author_id' => $author_id], ['name' => $author_name] ); // Retrieve author by author id, or create it with the author id and name attributes...
-            $sentiment = Sentiment::firstOrCreate(['name' => mb_strtolower($row[8])]);
-            $project = Project::firstOrCreate(['name' => $row[12]]);
-            $gender = Gender::firstOrCreate(['name' => $row[11]]);
+            $sentiment = Sentiment::firstOrCreate(['name' => mb_strtolower($row['sentiment'])]);
+            $project = Project::firstOrCreate(['name' => $row['project_name']]);
+            $gender = Gender::firstOrCreate(['name' => $row['gender']]);
 
             
-            $tags_names = explode('|', str_replace(' ', '', $row[10]));
+            $tags_names = explode('|', str_replace(' ', '', $row['tag']));
             $tags = array();
 
             foreach ($tags_names as $name) {
@@ -81,11 +81,11 @@ class PostsImport implements ToCollection
             }
 
             $post = Post::updateOrCreate(
-                ['so_id' => $row[0]], //find to update by 'so_id'
-                ['content' => $row[4], //if can't find use 'so_id' along with this other values to create new
-                'link' => $row[7],
-                'sm_created_at' => $row[5],
-                'so_added_to_system' => $row[6],
+                ['so_id' => $row['id']], //find to update by 'so_id'
+                ['content' => $row['content_of_posts'], //if can't find use 'so_id' along with this other values to create new
+                'link' => $row['link_to_the_source'],
+                'sm_created_at' => $row['created'],
+                'so_added_to_system' => $row['added_to_system'],
                 'domain_id' => $domain->id,
                 'type_id' => $type->id,
                 'author_id' => $author->id,
@@ -95,9 +95,43 @@ class PostsImport implements ToCollection
             );
 
             //connect new post with tags or sync tags if post is updated
-
-
             $post->tags()->sync($tags);
         }
+    }
+
+    // this function returns all validation errors after import:
+    public function getErrors()
+    {
+        return $this->errors;
+    }
+
+    public function rules(): array
+    {
+        // return [
+        //     '0' => 'required|max:255',
+        //     '1' => 'required|max:255',
+        //     '2' => 'required|unique:users,email|email|max:255',
+        // ];
+    }
+
+    public function validationMessages()
+    {
+        // return [
+        //     '0.required' => trans('user.first_name_is_required'),
+        //     '1.required' => trans('user.last_name_is_required'),
+        //     '2.required' => trans('user.email_is_required'),
+        //     '2.unique' => trans('user.email_must_be_unique'),
+        //     '2.email' => trans('user.email_must_be_valid'),
+        // ];
+    }
+
+    public function batchSize(): int
+    {
+        return 100;
+    }
+
+    public function chunkSize(): int
+    {
+        return 100;
     }
 }

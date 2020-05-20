@@ -53,10 +53,20 @@ class ImportController extends Controller
 
             return back()->withErrors($validator);
         }
+
+        try {
+            Excel::import(new PostsImport,request()->file('file'));
+        }
+        catch (\Maatwebsite\Excel\Validators\ValidationException $e) {
+            $failures = $e->failures();
+            return back()->with(['failures' => $failures]);
+        }
         // dd(request()->file('file'));
-        Excel::import(new PostsImport,request()->file('file'));
+        // $import = Excel::import(new PostsImport,request()->file('file'));
+
+        // dd($import->failures());
            
-        return back();
+        return back()->withStatus('Data imported successfully.');
     }
 
 
