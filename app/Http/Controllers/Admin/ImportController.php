@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
   
 use App\Exports\UsersExport;
 use App\Http\Controllers\Controller;
-use App\Imports\UsersImport;
+use App\Imports\PostsImport;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Maatwebsite\Excel\Facades\Excel;
@@ -53,8 +53,8 @@ class ImportController extends Controller
 
             return back()->withErrors($validator);
         }
-        // dd(request());
-        // Excel::import(new PostImport,request()->file('file'));
+        // dd(request()->file('file'));
+        Excel::import(new PostsImport,request()->file('file'));
            
         return back();
     }

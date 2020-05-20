@@ -7,6 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 class Post extends Model
 {
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'so_id', 'content', 'link', 'sm_created_at', 'so_added_to_system', 'domain_id', 'type_id', 'author_id', 'sentiment_id', 'project_id', 'gender_id',
+    ];
+    /**
      * The tags that belong to the post.
      */
     public function tags()

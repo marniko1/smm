@@ -186,6 +186,7 @@ class TagSeeder extends Seeder
 							'POR_dr',
 							'AK_poseta',
 							'AK_debata',
+							'AK_medijskinastup',
 							'AK_miting',
 							'AK_koncert',
 							'AK_paketi',

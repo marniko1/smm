@@ -20,7 +20,7 @@
 	        <div class="card-body">
 	            <form action="{{ route('admin.import') }}" method="POST" enctype="multipart/form-data">
 	                @csrf
-	                <input id="file" type="file" class="form-control @error('file') is-invalid @enderror" name="file" value="{{ old('file') }}" autocomplete="file" autofocus>
+	                <input id="file" type="file" class="form-control @error('file') is-invalid @enderror" name="file" value="{{ old('file') }}" autocomplete="file" autofocus required>
 
                             @error('file')
                                 <span class="invalid-feedback" role="alert">
