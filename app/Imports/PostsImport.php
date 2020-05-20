@@ -27,10 +27,10 @@ class PostsImport implements ToCollection, WithHeadingRow, WithBatchInserts, Wit
     *
     * @return \Illuminate\Database\Eloquent\Model|null
     */
-    public function __construct()
-    {
-        set_time_limit(180); // 3 mins
-    }
+    // public function __construct()
+    // {
+    //     set_time_limit(10);
+    // }
     public function collection(Collection $rows)
     {
         // $failures = array();
