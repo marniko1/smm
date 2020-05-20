@@ -4,31 +4,30 @@
 
 @section('content')
 
-{{-- {{ dd($errors) }} --}}
+{{-- {{ dd(session('failures')) }} --}}
 
 	<div class="container">
 	    <div class="card bg-light mt-3">
 	        <div class="card-header">
 	            Import SentiOne Excel to database
 	        </div>
-	        
+
 	        <div class="card-body">
+
 	        	@if (session('status'))
 			    <div class="alert alert-success" role="alert">
 			        {{ session('status') }}
 			    </div>
 			    @endif
 
-			    @if (isset($failures))
+			    @if (session('failures'))
 				   <div class="alert alert-danger" role="alert">
 				      <strong>Errors:</strong>
 				      
 				      <ul>
-				         @foreach ($failures as $failure)
-				            @foreach ($failure->errors() as $error)
-				                <li>{{ $error }}</li>
-				            @endforeach
-				         @endforeach
+			            @foreach (session('failures') as $error)
+			                <li>{{ $error }}</li>
+			            @endforeach
 				      </ul>
 				   </div>
 				@endif

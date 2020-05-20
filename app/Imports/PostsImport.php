@@ -12,6 +12,7 @@ use App\Sentiment;
 use App\Tag;
 use App\Type;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Redirect;
 use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithBatchInserts;
 use Maatwebsite\Excel\Concerns\WithChunkReading;
@@ -20,6 +21,7 @@ use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
 class PostsImport implements ToCollection, WithHeadingRow, WithBatchInserts, WithChunkReading
 {
+    public $failures = array();
     /**
     * @param array $row
     *
@@ -27,12 +29,13 @@ class PostsImport implements ToCollection, WithHeadingRow, WithBatchInserts, Wit
     */
     public function collection(Collection $rows)
     {
-
-        foreach ($rows as $row) 
+        // $failures = array();
+        foreach ($rows as $key => $row) 
         {
+            try {
             $author_id = $row['author_id'];
             $author_name = $row['author'];
-            
+                
             $domain = Domain::firstOrCreate(['name' => $row['domain_group']]);
             $type = Type::firstOrCreate(['name' => $row['specific_type']]);
             $author = Author::updateOrCreate( ['author_id' => $author_id], ['name' => $author_name] ); // Retrieve author by author id, or create it with the author id and name attributes...
@@ -96,7 +99,24 @@ class PostsImport implements ToCollection, WithHeadingRow, WithBatchInserts, Wit
 
             //connect new post with tags or sync tags if post is updated
             $post->tags()->sync($tags);
+            } catch (\Illuminate\Database\QueryException $e) {
+
+                // throw $e;
+                dd($e);
+                // $e::report($exception);
+                // $this->throw();
+                // throw new \Exception($e);
+                $this->failures[] = "On row " . $row . " " . $e->errorInfo[2];
+                // $this->failures[] = "On row " . ($key + 2) . " " . $e->errorInfo[2];
+                // dd($failures);
+                // return response()->view('admin.import', [], 500); 
+                // return back()->withFailures($failures);
+                // return Redirect::to('/admin/import')->withFailures( $this->failures );
+                
+            }
         }
+        // $this->failures = $failures;
+        // dd($this->failures);
     }
 
     // this function returns all validation errors after import:
