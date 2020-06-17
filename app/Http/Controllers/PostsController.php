@@ -120,6 +120,15 @@ class PostsController extends Controller
                 $posts->whereIn('gender_id', $genders);
             }
 
+            if ($range = request()->get('range')) {
+
+                $range_arr =  explode(" - ", $range);
+                $start = date('Y-m-d H:i:s', strtotime($range_arr[0]));
+                $end = date('Y-m-d H:i:s', strtotime($range_arr[1]));
+
+                $posts->whereBetween('so_added_to_system', [ $start, $end ]);
+            }
+
 
 
             /*----------  Make DataTable  ----------*/
@@ -140,92 +149,11 @@ class PostsController extends Controller
 
                 return $post_tags;
             })
-            // ->filterColumn('tags.name', function($query, $keyword) {
-
-            //         var_dump($query->bindings);
-            //         $sql = "CONCAT(users.first_name,'-',users.last_name)  like ?";
-            //         // $query->whereRaw($sql, ["%{$keyword}%"]);
-            //     })
-        //     ->filter(function ($query) use ($posts) {
-
-        //         // $query = $posts;
-
-        //         if (request()->get('cats')) {
-
-        //             $query->whereIn('posts.id', [46,47,48,49,50,51,52,53,54,55,56]);
-
-        //         //     $cats = request()->get('cats');
-
-        //         //     $custom_filter = false;
-
-        //         //     $sql = "SELECT p.* FROM posts as p INNER JOIN post_tag as pt ON  p.id = pt.post_id INNER JOIN tags as t ON pt.tag_id = t.id GROUP BY p.id HAVING";
-
-        //         //     foreach ($cats as $key => $cat) {
-                        
-
-        //         //             if ($custom_filter) {
-        //         //                $sql .= " AND";
-        //         //             }
-        //         //             $sql .= " SUM(t.name = '$cat')";
-        //         //             $custom_filter = true;
-
-        //         //     }
-                    
-        //         //    return $posts->raw($sql);
-        //         // }
-
-        //         // $columns = request()->all()['columns'];
-
-        //         // $custom_filter = false;
-
-        //         // $sql = "";
-
-        //         // foreach ($columns as $key => $column) {
-        //         //     if ($column['search']['value'] && $column['name'] == 'tags.name') {
-
-        //         //         $value = $column['search']['value'];
-
-        //         //         if ($custom_filter) {
-        //         //            $sql .= " AND";
-        //         //         }
-        //         //         $sql .= " SUM(LOWER(t.name) = '$value')";
-        //         //         $custom_filter = true;
-
-        //         //     }
-        //         // }
-
-        //         // if ($custom_filter) {
-
-        //         //     // var_dump($query->getQuery()->bindings);
-                    
-        //         //     $query->havingRaw($sql);
-        //         // }
-        //         // var_dump(request()->all());
-        //     // if (request()->has('content')) {
-        //     //     var_dump('taj je');
-        //         // $query->whereHas('signs', function($q) use($sign){
-        //         //     $q->where('sign', $sign);
-        //         // });
-        //     }
-        // }, true)
-            // ->setTotalRecords(Post::count())
-            // ->setFilteredRecords(100)
             ->rawColumns(['link', 'gender.icon', 'sentiment.icon'])
             ->make();
         }
 
-        // $filters = array();
-
         $all_categories = Category::with('tags')->get();
-
-
-        // $filters[] = Domain::all();
-        // $filters[] = Type::all();
-        // $filters[] = Author::all();
-        // $filters[] = Sentiment::all();
-        // $filters[] = Project::all();
-        // $filters[] = Gender::all();
-
 
         $all_domains = Domain::all();
         $all_types = Type::all();
@@ -235,8 +163,6 @@ class PostsController extends Controller
         $all_genders = Gender::all();
 
 
-
-        // return view('posts')->with(['all_categories' => $all_categories, 'filters' => $filters]);
         return view('posts')->with(['all_categories' => $all_categories, 'all_domains' => $all_domains, 'all_types' => $all_types, 'all_authors' => $all_authors, 'all_sentiments' => $all_sentiments, 'all_projects' => $all_projects, 'all_genders' => $all_genders]);
     }
 

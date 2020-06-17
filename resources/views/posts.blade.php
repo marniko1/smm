@@ -4,15 +4,18 @@
 
 @section('content')
 
-{{-- get MODEL name by table name --}}
-{{-- {{ dd(Str::studly(Str::singular($all_domains[0]->getTable()))) }} --}}
+{{-- {{ dd($all_domains) }} --}}
 
     <div class="container-fluid">
         <div class="row justify-content-center">
             <div class="col-md-12">
                 <div class="card">
 
-                    <div class="card-header"><h3><i class="fab fa-facebook"></i><i class="fab fa-twitter" style="vertical-align: super; margin-left: -5px;"></i><i class="fab fa-instagram" style="vertical-align: sub; margin-left: -20px;"></i> {{ __('Posts') }}</h3></div>
+                    <div class="card-header">
+                        <h3>
+                            <i class="fab fa-facebook" style="color: #3b5998;"></i><i class="fab fa-twitter" style="vertical-align: super;margin-left: -5px;color: #55acee;"></i><i class="fab fa-instagram" style="vertical-align: sub;margin-left: -20px;color: #3f729b;"></i> {{ __('Posts') }}
+                        </h3>
+                    </div>
                     
                     <div class="card-body">
 
@@ -20,7 +23,7 @@
                             
                             @foreach ($all_categories as $key => $category)
                                 <div class="col-md-4 mb-3 tags">
-                                    <select class="js-example-basic-multiple col-12" name="tags[]" multiple="multiple" data-placeholder="{{ $category->name }}">
+                                    <select class="filters col-12" name="tags[]" multiple="multiple" data-placeholder="{{ $category->name }}">
                                         @foreach ($category->tags as $tag)
                                             <option value="{{ $tag->id }}">{{ $tag->name }}</option>
                                         @endforeach
@@ -34,25 +37,62 @@
                         <hr>
 
                         <div class="row">
+                            <div class="col-md-4 row">
+                                <label for="reportrange" class="col-3 col-form-label">Report date range</label>
+                                <div class="col reportrange-input-wrapper">
+                                    <input class="form-control reportrange bg-white btn text-dark border" type="button" id="reportrange" readonly>
+                                    <i class="fas fa-caret-down"></i>
+                                </div>
+                            </div>
 
-                            <div class="col-md-4">
-                                <select class="js-example-basic-multiple col-12" name="domains[]" multiple="multiple" data-placeholder="Domain">
+                            <div class="col-md-8 row align-content-center">
+
+                                <div class="col-md-2 h2 border rounded text-center filter-icons-wrapper">
+
                                     @foreach ($all_domains as $domain)
-                                        <option value="{{ $domain->id }}">{{ $domain->name }}</option>
+                                        <label class="mb-0 filter-icons-labels" for="{{ $domain->name }}-icon">{!! $domain->icon !!}</label>
+                                        <input id="{{ $domain->name }}-icon" class="invisible position-absolute filter-icons" type="checkbox" name="domain[]" value="{{ $domain->id }}" checked>
                                     @endforeach
-                                </select>
-                            </div>
 
-                            <div class="col-md-4">
-                                <select class="js-example-basic-multiple col-12" name="types[]" multiple="multiple" data-placeholder="Type">
+                                </div>
+
+                                <div class="col-md-2 h2 border rounded text-center filter-icons-wrapper">
+
+                                    @foreach ($all_sentiments as $sentiment)
+                                        <label class="mb-0 filter-icons-labels btn" for="{{ $sentiment->name }}-icon">{!! $sentiment->icon !!}</label>
+                                        <input id="{{ $sentiment->name }}-icon" class="invisible position-absolute filter-icons" type="checkbox" name="sentiments[]" value="{{ $sentiment->id }}" checked>
+                                    @endforeach
+
+                                </div>
+
+                                <div class="col-md-2 h2 border rounded text-center filter-icons-wrapper">
+
+                                    @foreach ($all_genders as $gender)
+                                        <label class="mb-0 filter-icons-labels btn" for="{{ $gender->name }}-icon">{!! $gender->icon !!}</label>
+                                        <input id="{{ $gender->name }}-icon" class="invisible position-absolute filter-icons" type="checkbox" name="genders[]" value="{{ $gender->id }}" checked>
+                                    @endforeach
+
+                                </div>
+
+                                <div class="col-md-6 h2 text-center filter-btns-wrapper">
+
                                     @foreach ($all_types as $type)
-                                        <option value="{{ $type->id }}">{{ $type->name }}</option>
+                                        <label class="mb-0 filter-btns-labels btn border border-primary text-primary" for="{{ $type->name }}-btn">{{ $type->name }}</label>
+                                        <input id="{{ $type->name }}-btn" class="invisible position-absolute filter-btns" type="checkbox" name="types[]" value="{{ $type->id }}" checked>
                                     @endforeach
-                                </select>
+
+                                </div>
+
                             </div>
 
+                        </div>
+
+                        <hr>
+
+                        <div class="row">
+
                             <div class="col-md-4">
-                                <select class="js-example-basic-multiple col-12" name="authors[]" multiple="multiple" data-placeholder="Author">
+                                <select class="filters col-12" name="authors[]" multiple="multiple" data-placeholder="Author">
                                     @foreach ($all_authors as $author)
                                         <option value="{{ $author->id }}">{{ $author->name }}</option>
                                     @endforeach
@@ -60,25 +100,9 @@
                             </div>
 
                             <div class="col-md-4">
-                                <select class="js-example-basic-multiple col-12" name="sentiments[]" multiple="multiple" data-placeholder="Sentiments">
-                                    @foreach ($all_sentiments as $sentiment)
-                                        <option value="{{ $sentiment->id }}">{{ $sentiment->name }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-
-                            <div class="col-md-4">
-                                <select class="js-example-basic-multiple col-12" name="projects[]" multiple="multiple" data-placeholder="Project">
+                                <select class="filters col-12" name="projects[]" multiple="multiple" data-placeholder="Project">
                                     @foreach ($all_projects as $project)
                                         <option value="{{ $project->id }}">{{ $project->name }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-
-                            <div class="col-md-4">
-                                <select class="js-example-basic-multiple col-12" name="genders[]" multiple="multiple" data-placeholder="Gender">
-                                    @foreach ($all_genders as $gender)
-                                        <option value="{{ $gender->id }}">{{ $gender->name }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -118,13 +142,19 @@
 @stop
 
 @push('scripts')
-
+<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
 
     <script>
         jQuery(document).ready(function(){
 
-            $('.js-example-basic-multiple').select2({
-                allowClear: true
+            /*===============================
+            =            Select2            =
+            ===============================*/
+            
+            
+            $('.filters').select2({
+                allowClear: true,
+                // tags: true // allows to search by non existing tag
             }).on('select2:unselecting', function() {
                 $(this).data('unselecting', true);
             }).on('select2:opening', function(e) {
@@ -133,7 +163,52 @@
                     e.preventDefault();
                 }
             });
+            
+            /*=====  End of Select2  ======*/
+            
 
+
+
+            /*=======================================
+            =            Datepickerrange            =
+            =======================================*/
+            
+            
+            let start = moment("2020-02-21").startOf('00:00');
+            let end = moment().startOf('23:59');
+
+            function cb(start, end) {
+                $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+            }
+
+            $('#reportrange').daterangepicker({
+                timePicker: true,
+                timePicker24Hour: true,
+                startDate: start,
+                endDate: end,
+                ranges: {
+                   'Today': [moment(), moment()],
+                   'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                   'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                   'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                   'This Month': [moment().startOf('month'), moment().endOf('month')],
+                   'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                },
+                locale: {
+                  format: 'DD.MM.YYYY. HH:mm'
+                }
+            }, cb);
+
+            cb(start, end);
+            
+            /*=====  End of Datepickerrange  ======*/
+            
+
+            /*=================================
+            =            DataTable            =
+            =================================*/
+            
+            
             let table = $('#posts-table').DataTable({
                 dom: '<"top"iflp<"clear">>rt<"bottom"iflp<"clear">>',
                 processing: true,
@@ -141,12 +216,14 @@
                 responsive: true,
                 search: {regex: true},
                 pagingType: "full_numbers",
+                language: {
+                    processing: '<i class="fas fa-circle-notch fa-spin fa-3x fa-fw text-primary"></i><span class="sr-only">Loading...</span>'
+                },
                 ajax: { 
                     url: URL + '/posts',
                         data: function (d) {
 
                             let tags = [];
-
                             $.each($('select[name="tags[]"]'), function (key,value){
                                 let val = $(value).val();
 
@@ -155,15 +232,36 @@
                                 }
                                 tags.push(val);
                             })
-
                             d.tags = tags;
 
-                            d.domains = $('select[name="domains[]"]').val();
-                            d.types = $('select[name="types[]"]').val();
+                            let domains = [0];
+                            $.each($('input[name="domain[]"]:checked'), function (key,value){
+                                domains.push($(value).val());
+                            })
+                            d.domains = domains;
+
+                            let sentiments = [0];
+                            $.each($('input[name="sentiments[]"]:checked'), function (key,value){
+                                sentiments.push($(value).val());
+                            })
+                            d.sentiments = sentiments;
+
+                            let genders = [0];
+                            $.each($('input[name="genders[]"]:checked'), function (key,value){
+                                genders.push($(value).val());
+                            })
+                            d.genders = genders;
+
+                            let types = [0];
+                            $.each($('input[name="types[]"]:checked'), function (key,value){
+                                types.push($(value).val());
+                            })
+                            d.types = types;
+
+
                             d.authors = $('select[name="authors[]"]').val();
-                            d.sentiments = $('select[name="sentiments[]"]').val();
                             d.projects = $('select[name="projects[]"]').val();
-                            d.genders = $('select[name="genders[]"]').val();
+                            d.range = $('#reportrange').val();
                         }
                     },
                 columns: [
@@ -220,10 +318,18 @@
                     //{ className: "permissions", "targets": [ 1 ] }
                 // ]
             });
+            
+            /*=====  End of DataTable  ======*/
+            
 
-            $('.js-example-basic-multiple, .or-and-toggle').change(function () {
+            // Filters events
+            $('.filters, .or-and-toggle, .reportrange, .filter-icons, .filter-btns').change(function () {
                 table.draw();
             });
+
+            $('.filter-icons-labels, .filter-btns-labels').click(function (e) {
+                $(this).toggleClass('opacity-5 grey-scale-100');
+            })
         });
     </script>
 

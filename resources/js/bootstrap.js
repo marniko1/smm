@@ -42,26 +42,26 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 
 // jQuery-UI
-// require('jquery-ui/ui/widgets/accordion.js');
-// require('jquery-ui/ui/widgets/autocomplete.js');
-// require('jquery-ui/ui/widgets/button.js');
-// require('jquery-ui/ui/widgets/checkboxradio.js');
-// require('jquery-ui/ui/widgets/controlgroup.js');
-// require('jquery-ui/ui/widgets/datepicker.js');
-// require('jquery-ui/ui/widgets/dialog.js');
-// require('jquery-ui/ui/widgets/draggable.js');
-// require('jquery-ui/ui/widgets/droppable.js');
-// require('jquery-ui/ui/widgets/menu.js');
-// require('jquery-ui/ui/widgets/mouse.js');
-// require('jquery-ui/ui/widgets/progressbar.js');
-// require('jquery-ui/ui/widgets/resizable.js');
-// require('jquery-ui/ui/widgets/selectable.js');
-// require('jquery-ui/ui/widgets/selectmenu.js');
-// require('jquery-ui/ui/widgets/slider.js');
-// require('jquery-ui/ui/widgets/sortable.js');
-// require('jquery-ui/ui/widgets/spinner.js');
-// require('jquery-ui/ui/widgets/tabs.js');
-// require('jquery-ui/ui/widgets/tooltip.js');
+require('jquery-ui/ui/widgets/accordion.js');
+require('jquery-ui/ui/widgets/autocomplete.js');
+require('jquery-ui/ui/widgets/button.js');
+require('jquery-ui/ui/widgets/checkboxradio.js');
+require('jquery-ui/ui/widgets/controlgroup.js');
+require('jquery-ui/ui/widgets/datepicker.js');
+require('jquery-ui/ui/widgets/dialog.js');
+require('jquery-ui/ui/widgets/draggable.js');
+require('jquery-ui/ui/widgets/droppable.js');
+require('jquery-ui/ui/widgets/menu.js');
+require('jquery-ui/ui/widgets/mouse.js');
+require('jquery-ui/ui/widgets/progressbar.js');
+require('jquery-ui/ui/widgets/resizable.js');
+require('jquery-ui/ui/widgets/selectable.js');
+require('jquery-ui/ui/widgets/selectmenu.js');
+require('jquery-ui/ui/widgets/slider.js');
+require('jquery-ui/ui/widgets/sortable.js');
+require('jquery-ui/ui/widgets/spinner.js');
+require('jquery-ui/ui/widgets/tabs.js');
+require('jquery-ui/ui/widgets/tooltip.js');
 
 
 // DataTables
@@ -85,3 +85,6 @@ require('select2');
 
 // Bootstrap 4 Toggle
 require('bootstrap4-toggle')
+
+
+require('daterangepicker')

@@ -14,7 +14,7 @@
 @import '~@fortawesome/fontawesome-free/scss/brands';
 
 //jQuery UI
-//@import '~jquery-ui/themes/base/all.css';
+@import '~jquery-ui/themes/base/all.css';
 
 //Datatables
 @import '~datatables.net-bs4/css/dataTables.bootstrap4.min.css';
@@ -25,3 +25,6 @@
 
 //Bootstrap4 Toggle
 @import '~bootstrap4-toggle/css/bootstrap4-toggle.min.css';
+
+
+@import '~daterangepicker/daterangepicker.css';

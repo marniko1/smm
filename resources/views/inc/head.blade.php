@@ -26,6 +26,8 @@
     <body>
         <div id="app">
 
-            @include('inc.nav')
+            @auth
+                @include('inc.nav')
+            @endauth
 
             <main class="py-4">
