@@ -115,6 +115,7 @@
                                 <thead class="text-nowrap">
                                     <tr>
                                         <th>ID</th>
+                                        <th>SO Date</th>
                                         @foreach ($all_categories as $category)
                                             <th>{{ $category->name }}</th>
                                         @endforeach
@@ -223,6 +224,8 @@
                     url: URL + '/posts',
                         data: function (d) {
 
+                            console.log(d);
+
                             let tags = [];
                             $.each($('select[name="tags[]"]'), function (key,value){
                                 let val = $(value).val();
@@ -266,6 +269,14 @@
                     },
                 columns: [
                     { data: 'id', name: 'posts.id' },
+                    { 
+                        data: 'so_added_to_system',
+                        name: 'posts.so_added_to_system',
+                        render: function(data) {
+                            let date = moment(data);
+                            return date.format('DD.MM.YYYY. HH:mm');
+                        }
+                    },
                     @foreach ($all_categories as $category)
                         {
                             data: 'tags',
