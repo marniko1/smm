@@ -4,8 +4,6 @@
 
 @section('content')
 
-{{-- {{ dd($all_domains) }} --}}
-
     <div class="container-fluid">
         <div class="row justify-content-center">
             <div class="col-md-12">
@@ -168,44 +166,6 @@
             });
             
             /*=====  End of Select2  ======*/
-            
-
-
-
-            /*=======================================
-            =            Datepickerrange            =
-            =======================================*/
-            
-            
-            let start = moment("2020-02-21").startOf('day');
-            let end = moment().startOf('23:59');
-
-            function cb(start, end) {
-                $('#reportrange input').val(start.format('DD.MM.YYYY. HH:mm') + ' - ' + end.format('DD.MM.YYYY. HH:mm'));
-            }
-
-            $('#reportrange').daterangepicker({
-                timePicker: true,
-                timePicker24Hour: true,
-                startDate: start,
-                endDate: end,
-                ranges: {
-                   'Today': [moment().startOf('day'), moment()],
-                   'Yesterday': [moment().subtract(1, 'days').startOf('day'), moment().subtract(1, 'days')],
-                   'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-                   'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-                   'This Month': [moment().startOf('month'), moment().endOf('month')],
-                   'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
-                },
-                locale: {
-                  format: 'DD.MM.YYYY. HH:mm'
-                }
-            }, cb);
-
-            cb(start, end);
-            
-            /*=====  End of Datepickerrange  ======*/
-            
 
             /*=================================
             =            DataTable            =
@@ -324,13 +284,45 @@
                     { data: 'gender.icon', name: 'gender.icon' },
                     { data: 'link', name: 'posts.link', orderable: false, searchable: false },
                 ],
-                // "columnDefs": [
-                    // { width: 200, "targets": [ 6 ] },
-                    //{ className: "permissions", "targets": [ 1 ] }
-                // ]
             });
             
             /*=====  End of DataTable  ======*/
+
+
+            /*=======================================
+            =            Datepickerrange            =
+            =======================================*/
+            
+            
+            let start = moment("2020-02-21").startOf('day');
+            let end = moment().startOf('23:59');
+
+            function cb(start, end) {
+                $('#reportrange input').val(start.format('DD.MM.YYYY. HH:mm') + ' - ' + end.format('DD.MM.YYYY. HH:mm'));
+                table.draw();
+            }
+
+            $('#reportrange').daterangepicker({
+                timePicker: true,
+                timePicker24Hour: true,
+                startDate: start,
+                endDate: end,
+                ranges: {
+                   'Today': [moment().startOf('day'), moment()],
+                   'Yesterday': [moment().subtract(1, 'days').startOf('day'), moment().subtract(1, 'days')],
+                   'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                   'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                   'This Month': [moment().startOf('month'), moment().endOf('month')],
+                   'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                },
+                locale: {
+                  format: 'DD.MM.YYYY. HH:mm'
+                }
+            }, cb);
+
+            cb(start, end);
+            
+            /*=====  End of Datepickerrange  ======*/
             
 
             // Filters events
@@ -343,12 +335,7 @@
             });
 
             $('i.fa-caret-down').click(function(){
-                // console.log($(this).parent().find('input'));
-                // if ($(this).parent().find('input').is(':focus')) {
-                    // $(this).parent().find('input').blur();
-                // } else {
-                    $(this).parent().find('input').focus();
-                // }
+                $(this).parent().find('input').focus();
             })
         });
     </script>
