@@ -39,7 +39,7 @@
                                 <label for="reportrange" class="col-3 col-form-label">Report date range</label>
                                 <div class="col reportrange-input-wrapper">
                                     <div id="reportrange">
-                                        <input class="reportrange form-control bg-white text-dark btn border" type="text" readonly>
+                                        <input class="reportrange form-control bg-white text-dark btn border rounded" type="text" readonly>
                                         <i class="fas fa-caret-down" style="cursor: pointer;"></i>
                                     </div>
                                 </div>
