@@ -40,8 +40,10 @@
                             <div class="col-md-4 row">
                                 <label for="reportrange" class="col-3 col-form-label">Report date range</label>
                                 <div class="col reportrange-input-wrapper">
-                                    <input class="form-control reportrange bg-white btn text-dark border" type="button" id="reportrange" readonly>
-                                    <i class="fas fa-caret-down"></i>
+                                    <div id="reportrange">
+                                        <input class="reportrange form-control bg-white text-dark btn border" type="text" readonly>
+                                        <i class="fas fa-caret-down" style="cursor: pointer;"></i>
+                                    </div>
                                 </div>
                             </div>
 
@@ -175,11 +177,11 @@
             =======================================*/
             
             
-            let start = moment("2020-02-21").startOf('00:00');
+            let start = moment("2020-02-21").startOf('day');
             let end = moment().startOf('23:59');
 
             function cb(start, end) {
-                $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+                $('#reportrange input').val(start.format('DD.MM.YYYY. HH:mm') + ' - ' + end.format('DD.MM.YYYY. HH:mm'));
             }
 
             $('#reportrange').daterangepicker({
@@ -188,8 +190,8 @@
                 startDate: start,
                 endDate: end,
                 ranges: {
-                   'Today': [moment(), moment()],
-                   'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                   'Today': [moment().startOf('day'), moment()],
+                   'Yesterday': [moment().subtract(1, 'days').startOf('day'), moment().subtract(1, 'days')],
                    'Last 7 Days': [moment().subtract(6, 'days'), moment()],
                    'Last 30 Days': [moment().subtract(29, 'days'), moment()],
                    'This Month': [moment().startOf('month'), moment().endOf('month')],
@@ -223,8 +225,6 @@
                 ajax: { 
                     url: URL + '/posts',
                         data: function (d) {
-
-                            console.log(d);
 
                             let tags = [];
                             $.each($('select[name="tags[]"]'), function (key,value){
@@ -264,7 +264,7 @@
 
                             d.authors = $('select[name="authors[]"]').val();
                             d.projects = $('select[name="projects[]"]').val();
-                            d.range = $('#reportrange').val();
+                            d.range = $('#reportrange input').val();
                         }
                     },
                 columns: [
@@ -340,6 +340,15 @@
 
             $('.filter-icons-labels, .filter-btns-labels').click(function (e) {
                 $(this).toggleClass('opacity-5 grey-scale-100');
+            });
+
+            $('i.fa-caret-down').click(function(){
+                // console.log($(this).parent().find('input'));
+                // if ($(this).parent().find('input').is(':focus')) {
+                    // $(this).parent().find('input').blur();
+                // } else {
+                    $(this).parent().find('input').focus();
+                // }
             })
         });
     </script>
