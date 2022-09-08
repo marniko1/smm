@@ -27,7 +27,7 @@
         "datatables": "^1.10.18",
         "datatables.net-bs4": "^1.10.20",
         "jquery": "^3.4.1",
-        "jszip": "^3.4.0",
+        "jszip": "^3.7.0",
         "pdfmake": "^0.1.65"
     }
 }
